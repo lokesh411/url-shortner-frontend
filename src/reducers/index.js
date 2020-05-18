@@ -5,13 +5,12 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'REQUESTED_DOG_SUCCEEDED':
+        case 'successShortenURL' :
             return {
-                ...state,
-                imageUrl: action.url,
-                message: 'here is the dog'
+                ...state, 
+                url: action.url
             }
-        case 'REQUESTED_DOG':
+        case 'loadingAction':
             return {
                 ...state,
                 loading: true,

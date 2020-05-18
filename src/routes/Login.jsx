@@ -35,7 +35,8 @@ class Login extends React.Component {
   render() {
     console.log('this.props in login compoent ::: ', this.props);
     return (
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', marginTop: 300 }}>
+        <h1>Welcome to the mighty URL shortner service</h1>
         <Form
           size="middle"
           onFinish={this.submitHandler}

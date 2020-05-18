@@ -7,6 +7,12 @@ import Shortner from './routes/Shortner';
 import Home from './routes/Home'
 import Register from './routes/Register'
 
+const NoMatchPage = () => {
+  return (
+    <h3>404 - Not found</h3>
+  );
+};
+
 class App extends React.Component {
   render() {
     return (
@@ -14,14 +20,17 @@ class App extends React.Component {
         <Route path='/' exact>
           <Home {...this.props} />
         </Route>
-        <Route path='/register' exact>
-          <Register {...this.props}/>
+        <Route path='/register' >
+          <Register {...this.props} />
         </Route>
-        <Route path='/login' exact {...this.props}>
+        <Route path='/login'>
           <Login {...this.props} />
         </Route>
-        <Route path='/home' exact component={Shortner}>
+        <Route path='/home'>
           <Shortner {...this.props} />
+        </Route>
+        <Route>
+          <NoMatchPage />
         </Route>
       </Switch>
     )
@@ -32,5 +41,3 @@ export default connect((state) => {
   console.log(state);
   return state;
 })(App);
-
-// export default App;

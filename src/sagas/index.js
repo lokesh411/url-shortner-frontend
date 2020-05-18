@@ -1,37 +1,45 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
-const requestDog = () => {
-    return { type: 'REQUESTED_DOG' }
-};
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { message } from 'antd'
+import { loginUser as callLoginAPI, registerUser as callRegisterAPI, shortenURL as callShortenAPI } from '../services/api'
 
-const requestDogSuccess = (data) => {
-    return { type: 'REQUESTED_DOG_SUCCEEDED', url: data.message }
-};
-
-const requestDogError = () => {
-    return { type: 'REQUESTED_DOG_FAILED' }
-};
-
-const fetchDog = () => {
-    return { type: 'FETCHED_DOG' }
-};
-
-function* fetchDogAsync() {
-    try {
-        yield put(requestDog());
-        const data = yield call(() => {
-            return fetch('https://dog.ceo/api/breeds/image/random')
-                .then(res => res.json())
-        }
-        );
-        yield put(requestDogSuccess(data));
-    } catch (error) {
-        yield put(requestDogError());
+function* userLogin({ values }) {
+    const response = yield call(callLoginAPI, values);
+    if (!response.success) {
+        message.error('Don\'t try to fake me')
+        return;
     }
+    message.success('Logged in successfully')
+}
+
+function* registerUser({ values }) {
+    const response = yield call(callRegisterAPI, values);
+    if (!response.success) {
+        message.error('Invalid Values')
+        return;
+    }
+    message.success('Registered successfully')
+}
+
+function* shortenURL({ value }) {
+    const payload = {
+        link: value
+    }
+    const response = yield call(callShortenAPI, payload);
+    if (!response.success) {
+        message.error('Error occurred while shortening Please try again!!');
+        return;
+    }
+    yield put({
+        type: 'returnShortenURL',
+        payload: response.data.url
+    })
 }
 
 function* entrySaga() {
     console.log('inside entry saga')
-    yield takeEvery('FETCHED_DOG', fetchDogAsync);
+    yield takeEvery('LOGIN_USER', userLogin);
+    yield takeEvery('REGISTER_USER', registerUser);
+    yield takeEvery('SHORTEN_URL', shortenURL);
 }
 
 export default entrySaga;
