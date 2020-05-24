@@ -1,5 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { message } from 'antd'
+import {history} from 'react-router-dom'
 import { loginUser as callLoginAPI, registerUser as callRegisterAPI, shortenURL as callShortenAPI } from '../services/api'
 
 function* userLogin({ values }) {
@@ -8,7 +9,10 @@ function* userLogin({ values }) {
         message.error('Don\'t try to fake me')
         return;
     }
-    message.success('Logged in successfully')
+    message.success('Logged in successfully', 1000)
+    setTimeout(() => {
+        window.location = '/home'
+    }, 1000)
 }
 
 function* registerUser({ values }) {
@@ -17,12 +21,15 @@ function* registerUser({ values }) {
         message.error('Invalid Values')
         return;
     }
+    setTimeout(() => {
+        window.location = '/login'
+    }, 1000)
     message.success('Registered successfully')
 }
 
 function* shortenURL({ value }) {
     const payload = {
-        link: value
+        url: value
     }
     const response = yield call(callShortenAPI, payload);
     if (!response.success) {

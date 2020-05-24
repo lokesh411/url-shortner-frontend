@@ -1,3 +1,4 @@
+import { message } from 'antd'
 const request = (url, payload, method) => {
     const requestMethod = method || 'GET';
     const defaultOptions = {
@@ -7,19 +8,25 @@ const request = (url, payload, method) => {
             'Content-Type': 'application/json',
         }
     }
-    url = 'http://localhost:5000' + url
+    url = 'http://localhost:9000' + url
     const requestOptions = { ...defaultOptions, body: JSON.stringify(payload) }
-    return fetch(url, requestOptions).then(res => res.json())
+    return fetch(url, requestOptions).then(res => {
+        if (res.status === 401) {
+            message.info('Session logged out please login again')
+            window.location = '/login'
+        }
+        return res.json()
+    })
 }
 
 export function loginUser(payload) {
-    return request('/user/login', payload, 'POST')
+    return request('/api/user/login', payload, 'POST')
 }
 
 export function registerUser(payload) {
-    return request('/user/register', payload, 'POST')
+    return request('/api/user/register', payload, 'POST')
 }
 
 export function shortenURL(payload) {
-    return request('/url/short_url', payload, 'POST')
+    return request('/api/url/short_url', payload, 'POST')
 }

@@ -18,7 +18,6 @@ const tailLayout = {
 export default class Register extends React.Component {
 
   submitHandler = (values) => {
-    console.log(values, 'in submit handler');
     const { dispatch } = this.props;
     dispatch({
       type: 'REGISTER_USER',

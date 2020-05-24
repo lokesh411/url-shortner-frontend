@@ -19,7 +19,20 @@ const tailLayout = {
 
 class Login extends React.Component {
 
+  // componentDidMount () {
+  //   const {dispatch} = this.props;
+  //   //code to check login status;
+  //   dispatch({
+  //     type: 'CHECK_LOGIN_STATUS',
+  //   }).then((res)=>{})
+  // }
+
   submitHandler = (values) => {
+    const {dispatch} = this.props;
+    dispatch({
+      type: 'LOGIN_USER',
+      values
+    })
     console.log(values)
   }
 
@@ -45,8 +58,8 @@ class Login extends React.Component {
           style={{ width: 500, margin: '0 auto' }}
         >
           <Form.Item
-            label="Username"
-            name="username"
+            label="Email"
+            name="email"
             rules={[
               {
                 required: true,

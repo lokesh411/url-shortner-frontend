@@ -15,6 +15,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
             }
+        case 'returnShortenURL':
+            return {
+                ...state,
+                shortenedURL: action.payload
+            }
         default:
             return {
                 ...state
